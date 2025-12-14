@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0a0a0f">
+    <meta name="description"
+        content="JG Fitness - Application d'entraînement personnalisée. Suivez vos performances et atteignez vos objectifs.">
+
+    <title>JG Fitness</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💪</text></svg>">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <h1 class="app-title">
+                    <span class="logo-icon">💪</span>
+                    JG Fitness
+                </h1>
+                <div class="header-date" id="currentDate"></div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Séance View -->
+            <section id="seance-view" class="view active">
+                <div class="view-container">
+                    <!-- Program Selection -->
+                    <div class="program-selector" id="programSelector">
+                        <h2 class="section-title">Choisis ton programme</h2>
+                        <div class="program-cards" id="programCards">
+                            <!-- Programs will be inserted here -->
+                        </div>
+                    </div>
+
+                    <!-- Active Workout -->
+                    <div class="workout-container hidden" id="workoutContainer">
+                        <div class="workout-header">
+                            <button class="back-btn" id="backToPrograms">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                                </svg>
+                            </button>
+                            <div class="workout-info">
+                                <h2 id="currentProgramName">Programme</h2>
+                                <span class="workout-progress" id="workoutProgress">Exercice 1/6</span>
+                            </div>
+                        </div>
+
+                        <!-- Exercise Card -->
+                        <div class="exercise-card" id="exerciseCard">
+                            <div class="exercise-media">
+                                <div class="media-placeholder" id="exerciseMedia">
+                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="1.5">
+                                        <rect x="3" y="3" width="18" height="18" rx="2" />
+                                        <circle cx="8.5" cy="8.5" r="1.5" />
+                                        <path d="M21 15l-5-5L5 21" />
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div class="exercise-content">
+                                <h3 class="exercise-name" id="exerciseName">Nom de l'exercice</h3>
+                                <div class="exercise-muscles" id="exerciseMuscles">
+                                    <span class="muscle-badge">💪 Muscles ciblés</span>
+                                </div>
+
+                                <div class="exercise-stats">
+                                    <div class="stat-item">
+                                        <span class="stat-icon">⏱️</span>
+                                        <span class="stat-label">Repos</span>
+                                        <span class="stat-value" id="restTime">90s</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-icon">🔄</span>
+                                        <span class="stat-label">Séries</span>
+                                        <span class="stat-value" id="setsCount">4</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-icon">💯</span>
+                                        <span class="stat-label">Reps</span>
+                                        <span class="stat-value" id="repsCount">10-12</span>
+                                    </div>
+                                </div>
+
+                                <div class="exercise-instructions">
+                                    <h4>Instructions</h4>
+                                    <p id="exerciseInstructions">Instructions détaillées de l'exercice...</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Performance Log -->
+                        <div class="performance-log">
+                            <h4 class="log-title">
+                                <span class="log-icon">📝</span>
+                                Journal de bord
+                            </h4>
+                            <div class="log-entries" id="logEntries">
+                                <!-- Log entries will be inserted here -->
+                            </div>
+                        </div>
+
+                        <!-- Rest Timer Modal -->
+                        <div class="rest-timer-modal hidden" id="restTimerModal">
+                            <div class="timer-content">
+                                <div class="timer-circle">
+                                    <svg class="timer-svg" viewBox="0 0 100 100">
+                                        <circle class="timer-bg" cx="50" cy="50" r="45" />
+                                        <circle class="timer-progress" cx="50" cy="50" r="45" id="timerProgress" />
+                                    </svg>
+                                    <div class="timer-display" id="timerDisplay">90</div>
+                                </div>
+                                <p class="timer-label">Temps de repos</p>
+                                <button class="skip-timer-btn" id="skipTimer">Passer</button>
+                            </div>
+                        </div>
+
+                        <!-- Navigation Buttons -->
+                        <div class="exercise-navigation">
+                            <button class="nav-btn prev-btn" id="prevExercise" disabled>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M15 18l-6-6 6-6" />
+                                </svg>
+                                Précédent
+                            </button>
+                            <button class="nav-btn next-btn" id="nextExercise">
+                                Suivant
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M9 18l6-6-6-6" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Workout Complete -->
+                    <div class="workout-complete hidden" id="workoutComplete">
+                        <div class="complete-content">
+                            <div class="complete-icon">🎉</div>
+                            <h2>Séance terminée !</h2>
+                            <p>Bravo pour cette séance. Continue comme ça !</p>
+                            <div class="complete-stats">
+                                <div class="complete-stat">
+                                    <span class="stat-number" id="totalExercises">0</span>
+                                    <span class="stat-text">Exercices</span>
+                                </div>
+                                <div class="complete-stat">
+                                    <span class="stat-number" id="totalSets">0</span>
+                                    <span class="stat-text">Séries</span>
+                                </div>
+                            </div>
+                            <button class="primary-btn" id="finishWorkout">Retour à l'accueil</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Réglages View -->
+            <section id="reglages-view" class="view">
+                <div class="view-container">
+                    <h2 class="view-title">Réglages</h2>
+
+                    <div class="settings-group">
+                        <h3 class="settings-group-title">Général</h3>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <span class="setting-icon">🔔</span>
+                                <div class="setting-text">
+                                    <span class="setting-label">Notifications</span>
+                                    <span class="setting-desc">Recevoir des rappels d'entraînement</span>
+                                </div>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" id="notificationsToggle">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <span class="setting-icon">🔊</span>
+                                <div class="setting-text">
+                                    <span class="setting-label">Son du timer</span>
+                                    <span class="setting-desc">Alerte sonore fin de repos</span>
+                                </div>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" id="soundToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <span class="setting-icon">📳</span>
+                                <div class="setting-text">
+                                    <span class="setting-label">Vibration</span>
+                                    <span class="setting-desc">Vibrer à la fin du repos</span>
+                                </div>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" id="vibrationToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="settings-group">
+                        <h3 class="settings-group-title">Données</h3>
+
+                        <button class="setting-button" id="exportData">
+                            <span class="setting-icon">📤</span>
+                            <span class="setting-label">Exporter les données</span>
+                            <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <path d="M9 18l6-6-6-6" />
+                            </svg>
+                        </button>
+
+                        <button class="setting-button" id="importData">
+                            <span class="setting-icon">📥</span>
+                            <span class="setting-label">Importer les données</span>
+                            <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <path d="M9 18l6-6-6-6" />
+                            </svg>
+                        </button>
+
+                        <button class="setting-button danger" id="clearHistory">
+                            <span class="setting-icon">🗑️</span>
+                            <span class="setting-label">Effacer l'historique</span>
+                            <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <path d="M9 18l6-6-6-6" />
+                            </svg>
+                        </button>
+
+                        <button class="setting-button danger" id="resetApp">
+                            <span class="setting-icon">⚠️</span>
+                            <span class="setting-label">Réinitialiser l'application</span>
+                            <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <path d="M9 18l6-6-6-6" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="settings-group">
+                        <h3 class="settings-group-title">À propos</h3>
+
+                        <div class="about-info">
+                            <div class="app-version">
+                                <span class="logo-icon">💪</span>
+                                <div>
+                                    <strong>JG Fitness</strong>
+                                    <span>Version 1.0.0</span>
+                                </div>
+                            </div>
+                            <p class="about-text">Application d'entraînement personnalisée pour atteindre vos objectifs
+                                fitness.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Profil View -->
+            <section id="profil-view" class="view">
+                <div class="view-container">
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            <span>JG</span>
+                        </div>
+                        <h2 class="profile-name" id="profileName">Utilisateur</h2>
+                        <p class="profile-tagline">🔥 En route vers tes objectifs</p>
+                    </div>
+
+                    <div class="stats-overview">
+                        <div class="stat-card">
+                            <span class="stat-icon-large">📅</span>
+                            <span class="stat-value-large" id="totalWorkouts">0</span>
+                            <span class="stat-label-small">Séances</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-icon-large">🔥</span>
+                            <span class="stat-value-large" id="currentStreak">0</span>
+                            <span class="stat-label-small">Streak</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-icon-large">🏆</span>
+                            <span class="stat-value-large" id="bestStreak">0</span>
+                            <span class="stat-label-small">Record</span>
+                        </div>
+                    </div>
+
+                    <div class="profile-section">
+                        <h3 class="section-heading">
+                            <span>🏋️</span>
+                            Records Personnels
+                        </h3>
+                        <div class="pr-list" id="prList">
+                            <div class="empty-state">
+                                <span class="empty-icon">🎯</span>
+                                <p>Tes records apparaîtront ici</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-section">
+                        <h3 class="section-heading">
+                            <span>📊</span>
+                            Historique récent
+                        </h3>
+                        <div class="history-list" id="historyList">
+                            <div class="empty-state">
+                                <span class="empty-icon">📝</span>
+                                <p>Ton historique apparaîtra ici</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" data-view="seance-view">
+                <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2">
+                    <path
+                        d="M6.5 6.5h11M6.5 17.5h11M4 12h16M2 9.5V6a2 2 0 012-2h2.5M2 14.5V18a2 2 0 002 2h2.5M22 9.5V6a2 2 0 00-2-2h-2.5M22 14.5V18a2 2 0 01-2 2h-2.5" />
+                </svg>
+                <span>Séance</span>
+            </button>
+            <button class="nav-item" data-view="reglages-view">
+                <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2">
+                    <circle cx="12" cy="12" r="3" />
+                    <path
+                        d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z" />
+                </svg>
+                <span>Réglages</span>
+            </button>
+            <button class="nav-item" data-view="profil-view">
+                <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                </svg>
+                <span>Profil</span>
+            </button>
+        </nav>
+
+        <!-- Toast Notification -->
+        <div class="toast hidden" id="toast">
+            <span class="toast-message" id="toastMessage"></span>
+        </div>
+
+        <!-- Confirmation Modal -->
+        <div class="modal-overlay hidden" id="confirmModal">
+            <div class="modal-content">
+                <h3 id="modalTitle">Confirmation</h3>
+                <p id="modalMessage">Êtes-vous sûr ?</p>
+                <div class="modal-actions">
+                    <button class="modal-btn cancel" id="modalCancel">Annuler</button>
+                    <button class="modal-btn confirm" id="modalConfirm">Confirmer</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Workout Detail Modal -->
+        <div class="modal-overlay workout-modal hidden" id="workoutDetailModal">
+            <div class="modal-content workout-detail-modal">
+                <div class="modal-header">
+                    <h3 id="workoutDetailTitle">Détails de la séance</h3>
+                    <button class="close-modal-btn" id="closeWorkoutDetail">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M18 6L6 18M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="workout-detail-info">
+                        <p class="workout-detail-date" id="workoutDetailDate"></p>
+                        <p class="workout-detail-program" id="workoutDetailProgram"></p>
+                    </div>
+                    <div class="workout-detail-exercises" id="workoutDetailExercises">
+                        <!-- Exercises will be inserted here -->
+                    </div>
+                </div>
+                <div class="modal-actions workout-actions">
+                    <button class="action-btn export-txt" id="exportWorkoutTxt">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                            <polyline points="14 2 14 8 20 8" />
+                            <line x1="16" y1="13" x2="8" y2="13" />
+                            <line x1="16" y1="17" x2="8" y2="17" />
+                        </svg>
+                        Texte
+                    </button>
+                    <button class="action-btn export-pdf" id="exportWorkoutPdf">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                            <polyline points="14 2 14 8 20 8" />
+                            <path d="M10 12h4" />
+                            <path d="M10 16h4" />
+                        </svg>
+                        PDF
+                    </button>
+                    <button class="action-btn delete-workout" id="deleteWorkoutBtn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="3 6 5 6 21 6" />
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                        </svg>
+                        Supprimer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
