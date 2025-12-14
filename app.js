@@ -10,7 +10,8 @@ const STORAGE_KEYS = {
     SETTINGS: 'jg_fitness_settings',
     WORKOUT_HISTORY: 'jg_fitness_history',
     PERSONAL_RECORDS: 'jg_fitness_prs',
-    CURRENT_LOG: 'jg_fitness_current_log'
+    CURRENT_LOG: 'jg_fitness_current_log',
+    CUSTOM_WORKOUTS: 'jg_fitness_custom_workouts'
 };
 
 // ========================================
@@ -433,8 +434,17 @@ function updateCurrentDate() {
 // PROGRAMS
 // ========================================
 function renderPrograms() {
-    DOM.programCards.innerHTML = TRAINING_PROGRAMS.map(program => `
-        <div class="program-card" data-program-id="${program.id}">
+    const allPrograms = getAllPrograms();
+
+    DOM.programCards.innerHTML = allPrograms.map(program => `
+        <div class="program-card ${program.isCustom ? 'custom' : ''}" data-program-id="${program.id}">
+            ${program.isCustom ? `
+                <button class="delete-program-btn" data-delete-id="${program.id}" onclick="event.stopPropagation(); deleteCustomWorkout('${program.id}')">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+            ` : ''}
             <div class="program-card-header">
                 <div class="program-icon">${program.icon}</div>
                 <div>
@@ -472,7 +482,8 @@ function estimateWorkoutDuration(program) {
 }
 
 function startProgram(programId) {
-    const program = TRAINING_PROGRAMS.find(p => p.id === programId);
+    const allPrograms = getAllPrograms();
+    const program = allPrograms.find(p => p.id === programId);
     if (!program) return;
 
     AppState.currentProgram = program;
@@ -1467,10 +1478,224 @@ function setupWorkoutDetailListeners() {
 }
 
 // ========================================
+// CUSTOM WORKOUT CREATION
+// ========================================
+let newWorkoutExercises = [];
+let selectedIcon = '🏋️';
+
+function openCreateWorkoutModal() {
+    newWorkoutExercises = [];
+    selectedIcon = '🏋️';
+    document.getElementById('workoutName').value = '';
+    renderNewExercisesList();
+
+    // Reset icon selection
+    document.querySelectorAll('.icon-option').forEach(opt => {
+        opt.classList.toggle('selected', opt.dataset.icon === selectedIcon);
+    });
+
+    document.getElementById('createWorkoutModal').classList.remove('hidden');
+}
+
+function closeCreateWorkoutModal() {
+    document.getElementById('createWorkoutModal').classList.add('hidden');
+    newWorkoutExercises = [];
+}
+
+function openAddExerciseModal() {
+    // Reset form
+    document.getElementById('newExerciseName').value = '';
+    document.getElementById('newExerciseMuscles').value = '';
+    document.getElementById('newExerciseSets').value = '4';
+    document.getElementById('newExerciseReps').value = '8-12';
+    document.getElementById('newExerciseRest').value = '90';
+    document.getElementById('newExerciseInstructions').value = '';
+
+    document.getElementById('addExerciseModal').classList.remove('hidden');
+}
+
+function closeAddExerciseModal() {
+    document.getElementById('addExerciseModal').classList.add('hidden');
+}
+
+function addExerciseToList() {
+    const name = document.getElementById('newExerciseName').value.trim();
+    const muscles = document.getElementById('newExerciseMuscles').value.trim();
+    const sets = parseInt(document.getElementById('newExerciseSets').value) || 4;
+    const reps = document.getElementById('newExerciseReps').value.trim() || '8-12';
+    const restTime = parseInt(document.getElementById('newExerciseRest').value) || 90;
+    const instructions = document.getElementById('newExerciseInstructions').value.trim();
+
+    if (!name) {
+        showToast('⚠️ Entre le nom de l\'exercice');
+        return;
+    }
+
+    const exercise = {
+        id: 'custom_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+        name: name,
+        muscles: muscles || 'Non spécifié',
+        sets: sets,
+        reps: reps,
+        restTime: restTime,
+        instructions: instructions || 'Aucune instruction',
+        media: null
+    };
+
+    newWorkoutExercises.push(exercise);
+    renderNewExercisesList();
+    closeAddExerciseModal();
+    showToast(`✅ ${name} ajouté`);
+}
+
+function removeExerciseFromList(index) {
+    newWorkoutExercises.splice(index, 1);
+    renderNewExercisesList();
+}
+
+function renderNewExercisesList() {
+    const container = document.getElementById('newExercisesList');
+
+    if (newWorkoutExercises.length === 0) {
+        container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: var(--spacing-md);">Aucun exercice ajouté</p>';
+        return;
+    }
+
+    container.innerHTML = newWorkoutExercises.map((ex, index) => `
+        <div class="exercise-item-preview">
+            <div class="exercise-item-info">
+                <span class="exercise-item-name">${ex.name}</span>
+                <span class="exercise-item-details">${ex.sets} séries × ${ex.reps} | Repos ${formatRestTime(ex.restTime)}</span>
+            </div>
+            <button class="remove-exercise-btn" data-index="${index}">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+    `).join('');
+
+    // Add remove handlers
+    container.querySelectorAll('.remove-exercise-btn').forEach(btn => {
+        btn.addEventListener('click', () => removeExerciseFromList(parseInt(btn.dataset.index)));
+    });
+}
+
+function saveNewWorkout() {
+    const name = document.getElementById('workoutName').value.trim();
+
+    if (!name) {
+        showToast('⚠️ Entre le nom de la séance');
+        document.getElementById('workoutName').focus();
+        return;
+    }
+
+    if (newWorkoutExercises.length === 0) {
+        showToast('⚠️ Ajoute au moins un exercice');
+        return;
+    }
+
+    const workout = {
+        id: 'custom_' + Date.now(),
+        name: name,
+        subtitle: 'Séance personnalisée',
+        icon: selectedIcon,
+        exercises: newWorkoutExercises,
+        isCustom: true
+    };
+
+    // Save to localStorage
+    const customWorkouts = JSON.parse(localStorage.getItem(STORAGE_KEYS.CUSTOM_WORKOUTS) || '[]');
+    customWorkouts.push(workout);
+    localStorage.setItem(STORAGE_KEYS.CUSTOM_WORKOUTS, JSON.stringify(customWorkouts));
+
+    // Re-render programs
+    renderPrograms();
+    closeCreateWorkoutModal();
+    showToast('✅ Séance créée !');
+}
+
+function deleteCustomWorkout(workoutId) {
+    showConfirmModal(
+        'Supprimer la séance',
+        'Es-tu sûr de vouloir supprimer cette séance personnalisée ?',
+        () => {
+            const customWorkouts = JSON.parse(localStorage.getItem(STORAGE_KEYS.CUSTOM_WORKOUTS) || '[]');
+            const newWorkouts = customWorkouts.filter(w => w.id !== workoutId);
+            localStorage.setItem(STORAGE_KEYS.CUSTOM_WORKOUTS, JSON.stringify(newWorkouts));
+            renderPrograms();
+            showToast('Séance supprimée 🗑️');
+        }
+    );
+}
+
+function getAllPrograms() {
+    const customWorkouts = JSON.parse(localStorage.getItem(STORAGE_KEYS.CUSTOM_WORKOUTS) || '[]');
+    return [...TRAINING_PROGRAMS, ...customWorkouts];
+}
+
+function setupCreateWorkoutListeners() {
+    // Open create workout modal
+    const addBtn = document.getElementById('addWorkoutBtn');
+    if (addBtn) addBtn.addEventListener('click', openCreateWorkoutModal);
+
+    // Close create workout modal
+    const closeBtn = document.getElementById('closeCreateWorkout');
+    if (closeBtn) closeBtn.addEventListener('click', closeCreateWorkoutModal);
+
+    const cancelBtn = document.getElementById('cancelCreateWorkout');
+    if (cancelBtn) cancelBtn.addEventListener('click', closeCreateWorkoutModal);
+
+    // Save workout
+    const saveBtn = document.getElementById('saveNewWorkout');
+    if (saveBtn) saveBtn.addEventListener('click', saveNewWorkout);
+
+    // Add exercise button
+    const addExBtn = document.getElementById('addExerciseBtn');
+    if (addExBtn) addExBtn.addEventListener('click', openAddExerciseModal);
+
+    // Close add exercise modal
+    const closeAddBtn = document.getElementById('closeAddExercise');
+    if (closeAddBtn) closeAddBtn.addEventListener('click', closeAddExerciseModal);
+
+    const cancelAddBtn = document.getElementById('cancelAddExercise');
+    if (cancelAddBtn) cancelAddBtn.addEventListener('click', closeAddExerciseModal);
+
+    // Confirm add exercise
+    const confirmAddBtn = document.getElementById('confirmAddExercise');
+    if (confirmAddBtn) confirmAddBtn.addEventListener('click', addExerciseToList);
+
+    // Icon selection
+    document.querySelectorAll('.icon-option').forEach(opt => {
+        opt.addEventListener('click', () => {
+            document.querySelectorAll('.icon-option').forEach(o => o.classList.remove('selected'));
+            opt.classList.add('selected');
+            selectedIcon = opt.dataset.icon;
+        });
+    });
+
+    // Close modals on background click
+    const createModal = document.getElementById('createWorkoutModal');
+    if (createModal) {
+        createModal.addEventListener('click', (e) => {
+            if (e.target === createModal) closeCreateWorkoutModal();
+        });
+    }
+
+    const addExModal = document.getElementById('addExerciseModal');
+    if (addExModal) {
+        addExModal.addEventListener('click', (e) => {
+            if (e.target === addExModal) closeAddExerciseModal();
+        });
+    }
+}
+
+// ========================================
 // START APP
 // ========================================
 document.addEventListener('DOMContentLoaded', () => {
     init();
     setupWorkoutDetailListeners();
     setupHistoryClickHandler();
+    setupCreateWorkoutListeners();
 });

@@ -1478,3 +1478,234 @@ body {
         grid-template-columns: repeat(2, 1fr);
     }
 }
+
+/* Section Header */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+.section-header .section-title {
+    margin-bottom: 0;
+}
+
+/* Add Workout Button */
+.add-workout-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--accent-gradient);
+    border: none;
+    border-radius: var(--border-radius-sm);
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.add-workout-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+}
+
+/* Create Workout Modal */
+.create-workout-modal {
+    max-width: 500px;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: var(--spacing-md);
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-xs);
+}
+
+.form-input {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+}
+
+.form-input::placeholder {
+    color: var(--text-muted);
+}
+
+.form-textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-sm);
+}
+
+/* Icon Selector */
+.icon-selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+}
+
+.icon-option {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-tertiary);
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.icon-option:hover {
+    border-color: var(--accent-primary);
+}
+
+.icon-option.selected {
+    border-color: var(--accent-primary);
+    background: rgba(139, 92, 246, 0.2);
+}
+
+/* Exercises List in Create Modal */
+.exercises-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.exercise-item-preview {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--bg-tertiary);
+    border-radius: var(--border-radius-sm);
+    border-left: 3px solid var(--accent-primary);
+}
+
+.exercise-item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.exercise-item-name {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.exercise-item-details {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.remove-exercise-btn {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(239, 68, 68, 0.1);
+    border: none;
+    border-radius: 50%;
+    color: var(--danger);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.remove-exercise-btn:hover {
+    background: rgba(239, 68, 68, 0.2);
+}
+
+/* Add Exercise Button */
+.add-exercise-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+    width: 100%;
+    padding: var(--spacing-md);
+    background: transparent;
+    border: 2px dashed var(--border-color);
+    border-radius: var(--border-radius-sm);
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.add-exercise-btn:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+    background: rgba(139, 92, 246, 0.05);
+}
+
+/* Save Workout Button */
+.save-workout {
+    background: var(--accent-gradient) !important;
+    color: white !important;
+}
+
+/* Custom program card styles */
+.program-card.custom {
+    border: 1px dashed var(--accent-primary);
+    background: rgba(139, 92, 246, 0.05);
+}
+
+.program-card .delete-program-btn {
+    position: absolute;
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(239, 68, 68, 0.1);
+    border: none;
+    border-radius: 50%;
+    color: var(--danger);
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.2s ease;
+}
+
+.program-card:hover .delete-program-btn {
+    opacity: 1;
+}
+
+.program-card .delete-program-btn:hover {
+    background: rgba(239, 68, 68, 0.2);
+}
