@@ -1710,63 +1710,63 @@ function setupCreateWorkoutListeners() {
 // Exercise database by body part
 const AI_EXERCISE_DATABASE = {
     shoulders: [
-        { name: 'Développé épaules', muscles: 'Deltoïdes', reps: '8-12', instructions: 'Pousser la barre au-dessus de la tête en gardant le dos droit.' },
-        { name: 'Élévations latérales', muscles: 'Deltoïdes latéraux', reps: '12-15', instructions: 'Lever les bras sur les côtés jusqu\'à hauteur des épaules.' },
-        { name: 'Face pulls', muscles: 'Deltoïdes postérieurs', reps: '15-20', instructions: 'Tirer la corde vers le visage en écartant les coudes.' },
-        { name: 'Oiseau', muscles: 'Deltoïdes postérieurs', reps: '12-15', instructions: 'Penché en avant, écarter les bras en serrant les omoplates.' }
+        { name: 'Développé épaules', muscles: 'Deltoïdes', reps: '8-12', instructions: 'Pousser la barre au-dessus de la tête en gardant le dos droit.', media: 'images/shoulder_press_ai.png' },
+        { name: 'Élévations latérales', muscles: 'Deltoïdes latéraux', reps: '12-15', instructions: 'Lever les bras sur les côtés jusqu\'à hauteur des épaules.', media: 'images/lateral_raises.png' },
+        { name: 'Face pulls', muscles: 'Deltoïdes postérieurs', reps: '15-20', instructions: 'Tirer la corde vers le visage en écartant les coudes.', media: 'images/face_pulls_ai.png' },
+        { name: 'Oiseau', muscles: 'Deltoïdes postérieurs', reps: '12-15', instructions: 'Penché en avant, écarter les bras en serrant les omoplates.', media: 'images/face_pulls.png' }
     ],
     chest: [
-        { name: 'Développé couché', muscles: 'Pectoraux', reps: '8-12', instructions: 'Descendre la barre jusqu\'à la poitrine puis pousser.' },
-        { name: 'Développé incliné haltères', muscles: 'Pectoraux supérieurs', reps: '10-12', instructions: 'Sur banc incliné, pousser les haltères vers le haut.' },
-        { name: 'Écarté poulie', muscles: 'Pectoraux', reps: '12-15', instructions: 'Ramener les poignées devant en gardant les bras légèrement fléchis.' },
-        { name: 'Pompes', muscles: 'Pectoraux / Triceps', reps: '15-20', instructions: 'Corps gainé, descendre en fléchissant les coudes.' },
-        { name: 'Dips', muscles: 'Pectoraux / Triceps', reps: '10-15', instructions: 'Se pencher légèrement en avant pour cibler les pectoraux.' }
+        { name: 'Développé couché', muscles: 'Pectoraux', reps: '8-12', instructions: 'Descendre la barre jusqu\'à la poitrine puis pousser.', media: 'images/dumbbell_bench_press.png' },
+        { name: 'Développé incliné haltères', muscles: 'Pectoraux supérieurs', reps: '10-12', instructions: 'Sur banc incliné, pousser les haltères vers le haut.', media: 'images/dumbbell_bench_press.png' },
+        { name: 'Écarté poulie', muscles: 'Pectoraux', reps: '12-15', instructions: 'Ramener les poignées devant en gardant les bras légèrement fléchis.', media: 'images/dumbbell_bench_press.png' },
+        { name: 'Pompes', muscles: 'Pectoraux / Triceps', reps: '15-20', instructions: 'Corps gainé, descendre en fléchissant les coudes.', media: 'images/push_ups.png' },
+        { name: 'Dips', muscles: 'Pectoraux / Triceps', reps: '10-15', instructions: 'Se pencher légèrement en avant pour cibler les pectoraux.', media: 'images/tricep_pushdown.png' }
     ],
     arms: [
-        { name: 'Curl biceps barre', muscles: 'Biceps', reps: '10-12', instructions: 'Fléchir les coudes en gardant les coudes près du corps.' },
-        { name: 'Curl marteau', muscles: 'Biceps / Avant-bras', reps: '10-12', instructions: 'Paumes face à face, monter les haltères.' },
-        { name: 'Extension triceps poulie', muscles: 'Triceps', reps: '12-15', instructions: 'Pousser la barre vers le bas en gardant les coudes fixes.' },
-        { name: 'Dips triceps', muscles: 'Triceps', reps: '12-15', instructions: 'Dos au banc, descendre en fléchissant les coudes.' },
-        { name: 'Curl concentré', muscles: 'Biceps', reps: '10-12', instructions: 'Coude sur la cuisse, remonter l\'haltère lentement.' }
+        { name: 'Curl biceps barre', muscles: 'Biceps', reps: '10-12', instructions: 'Fléchir les coudes en gardant les coudes près du corps.', media: 'images/bicep_curl.png' },
+        { name: 'Curl marteau', muscles: 'Biceps / Avant-bras', reps: '10-12', instructions: 'Paumes face à face, monter les haltères.', media: 'images/hammer_curl.png' },
+        { name: 'Extension triceps poulie', muscles: 'Triceps', reps: '12-15', instructions: 'Pousser la barre vers le bas en gardant les coudes fixes.', media: 'images/tricep_pushdown.png' },
+        { name: 'Dips triceps', muscles: 'Triceps', reps: '12-15', instructions: 'Dos au banc, descendre en fléchissant les coudes.', media: 'images/tricep_pushdown.png' },
+        { name: 'Curl concentré', muscles: 'Biceps', reps: '10-12', instructions: 'Coude sur la cuisse, remonter l\'haltère lentement.', media: 'images/bicep_curl.png' }
     ],
     forearms: [
-        { name: 'Curl poignets', muscles: 'Fléchisseurs avant-bras', reps: '15-20', instructions: 'Avant-bras sur un banc, fléchir les poignets.' },
-        { name: 'Extension poignets', muscles: 'Extenseurs avant-bras', reps: '15-20', instructions: 'Paumes vers le bas, lever les poignets.' },
-        { name: 'Farmer walk', muscles: 'Préhension / Avant-bras', reps: '30-45s', instructions: 'Marcher en tenant des poids lourds.' }
+        { name: 'Curl poignets', muscles: 'Fléchisseurs avant-bras', reps: '15-20', instructions: 'Avant-bras sur un banc, fléchir les poignets.', media: 'images/hammer_curl.png' },
+        { name: 'Extension poignets', muscles: 'Extenseurs avant-bras', reps: '15-20', instructions: 'Paumes vers le bas, lever les poignets.', media: 'images/hammer_curl.png' },
+        { name: 'Farmer walk', muscles: 'Préhension / Avant-bras', reps: '30-45s', instructions: 'Marcher en tenant des poids lourds.', media: 'images/hammer_curl.png' }
     ],
     abs: [
-        { name: 'Crunch', muscles: 'Abdominaux', reps: '15-20', instructions: 'Lever les épaules en contractant les abdos, ne pas tirer sur la nuque.' },
-        { name: 'Planche', muscles: 'Core / Abdominaux', reps: '30-60s', instructions: 'Maintenir le corps droit, gainage maximal.' },
-        { name: 'Relevé de jambes', muscles: 'Abdominaux inférieurs', reps: '12-15', instructions: 'Suspendu, lever les jambes à 90°.' },
-        { name: 'Russian twist', muscles: 'Obliques', reps: '20 (10/côté)', instructions: 'Assis, pieds levés, tourner le buste de chaque côté.' },
-        { name: 'Mountain climbers', muscles: 'Core / Cardio', reps: '30s', instructions: 'En position de pompe, ramener les genoux rapidement.' }
+        { name: 'Crunch', muscles: 'Abdominaux', reps: '15-20', instructions: 'Lever les épaules en contractant les abdos, ne pas tirer sur la nuque.', media: 'images/plank.png' },
+        { name: 'Planche', muscles: 'Core / Abdominaux', reps: '30-60s', instructions: 'Maintenir le corps droit, gainage maximal.', media: 'images/plank.png' },
+        { name: 'Relevé de jambes', muscles: 'Abdominaux inférieurs', reps: '12-15', instructions: 'Suspendu, lever les jambes à 90°.', media: 'images/plank.png' },
+        { name: 'Russian twist', muscles: 'Obliques', reps: '20 (10/côté)', instructions: 'Assis, pieds levés, tourner le buste de chaque côté.', media: 'images/plank.png' },
+        { name: 'Mountain climbers', muscles: 'Core / Cardio', reps: '30s', instructions: 'En position de pompe, ramener les genoux rapidement.', media: 'images/plank.png' }
     ],
     back: [
-        { name: 'Tirage vertical', muscles: 'Grand dorsal', reps: '10-12', instructions: 'Tirer la barre vers la poitrine en serrant les omoplates.' },
-        { name: 'Rowing barre', muscles: 'Dos / Rhomboïdes', reps: '8-12', instructions: 'Penché, tirer la barre vers le nombril.' },
-        { name: 'Tirage horizontal', muscles: 'Dos / Rhomboïdes', reps: '10-12', instructions: 'Assis, tirer la poignée vers le ventre.' },
-        { name: 'Pull-ups', muscles: 'Grand dorsal / Biceps', reps: '8-12', instructions: 'Se suspendre et tirer le corps vers le haut.' },
-        { name: 'Shrug', muscles: 'Trapèzes', reps: '12-15', instructions: 'Hausser les épaules vers les oreilles.' }
+        { name: 'Tirage vertical', muscles: 'Grand dorsal', reps: '10-12', instructions: 'Tirer la barre vers la poitrine en serrant les omoplates.', media: 'images/lat_pulldown.png' },
+        { name: 'Rowing barre', muscles: 'Dos / Rhomboïdes', reps: '8-12', instructions: 'Penché, tirer la barre vers le nombril.', media: 'images/seated_row.png' },
+        { name: 'Tirage horizontal', muscles: 'Dos / Rhomboïdes', reps: '10-12', instructions: 'Assis, tirer la poignée vers le ventre.', media: 'images/seated_row.png' },
+        { name: 'Pull-ups', muscles: 'Grand dorsal / Biceps', reps: '8-12', instructions: 'Se suspendre et tirer le corps vers le haut.', media: 'images/lat_pulldown.png' },
+        { name: 'Shrug', muscles: 'Trapèzes', reps: '12-15', instructions: 'Hausser les épaules vers les oreilles.', media: 'images/shoulder_press.png' }
     ],
     glutes: [
-        { name: 'Hip thrust', muscles: 'Fessiers', reps: '10-12', instructions: 'Dos sur banc, pousser les hanches vers le haut.' },
-        { name: 'Fentes', muscles: 'Fessiers / Quadriceps', reps: '10/jambe', instructions: 'Faire un grand pas et descendre le genou arrière.' },
-        { name: 'Kickback câble', muscles: 'Fessiers', reps: '12-15', instructions: 'Pousser la jambe vers l\'arrière en contractant le fessier.' },
-        { name: 'Pont fessier', muscles: 'Fessiers', reps: '15-20', instructions: 'Allongé, lever les hanches en serrant les fessiers.' },
-        { name: 'Abduction hanche', muscles: 'Moyen fessier', reps: '15-20', instructions: 'À la machine, écarter les cuisses.' }
+        { name: 'Hip thrust', muscles: 'Fessiers', reps: '10-12', instructions: 'Dos sur banc, pousser les hanches vers le haut.', media: 'images/hip_abduction.png' },
+        { name: 'Fentes', muscles: 'Fessiers / Quadriceps', reps: '10/jambe', instructions: 'Faire un grand pas et descendre le genou arrière.', media: 'images/bulgarian_split_squat.png' },
+        { name: 'Kickback câble', muscles: 'Fessiers', reps: '12-15', instructions: 'Pousser la jambe vers l\'arrière en contractant le fessier.', media: 'images/hip_abduction.png' },
+        { name: 'Pont fessier', muscles: 'Fessiers', reps: '15-20', instructions: 'Allongé, lever les hanches en serrant les fessiers.', media: 'images/hip_abduction.png' },
+        { name: 'Abduction hanche', muscles: 'Moyen fessier', reps: '15-20', instructions: 'À la machine, écarter les cuisses.', media: 'images/hip_abduction.png' }
     ],
     legs: [
-        { name: 'Squat', muscles: 'Quadriceps / Fessiers', reps: '8-12', instructions: 'Descendre les hanches en gardant le dos droit.' },
-        { name: 'Leg press', muscles: 'Quadriceps / Fessiers', reps: '10-12', instructions: 'Pousser la plateforme en contrôlant la descente.' },
-        { name: 'Leg extension', muscles: 'Quadriceps', reps: '12-15', instructions: 'Étendre les jambes en contractant les quadriceps.' },
-        { name: 'Leg curl', muscles: 'Ischio-jambiers', reps: '12-15', instructions: 'Fléchir les jambes en ramenant les talons vers les fesses.' },
-        { name: 'Soulevé de terre roumain', muscles: 'Ischio-jambiers', reps: '10-12', instructions: 'Descendre la barre le long des jambes, dos droit.' },
-        { name: 'Split squat bulgare', muscles: 'Quadriceps / Fessiers', reps: '10/jambe', instructions: 'Pied arrière sur banc, descendre en fente.' }
+        { name: 'Squat', muscles: 'Quadriceps / Fessiers', reps: '8-12', instructions: 'Descendre les hanches en gardant le dos droit.', media: 'images/hack_squat.png' },
+        { name: 'Leg press', muscles: 'Quadriceps / Fessiers', reps: '10-12', instructions: 'Pousser la plateforme en contrôlant la descente.', media: 'images/leg_press.png' },
+        { name: 'Leg extension', muscles: 'Quadriceps', reps: '12-15', instructions: 'Étendre les jambes en contractant les quadriceps.', media: 'images/leg_extension.png' },
+        { name: 'Leg curl', muscles: 'Ischio-jambiers', reps: '12-15', instructions: 'Fléchir les jambes en ramenant les talons vers les fesses.', media: 'images/leg_curl.png' },
+        { name: 'Soulevé de terre roumain', muscles: 'Ischio-jambiers', reps: '10-12', instructions: 'Descendre la barre le long des jambes, dos droit.', media: 'images/romanian_deadlift.png' },
+        { name: 'Split squat bulgare', muscles: 'Quadriceps / Fessiers', reps: '10/jambe', instructions: 'Pied arrière sur banc, descendre en fente.', media: 'images/bulgarian_split_squat.png' }
     ],
     calves: [
-        { name: 'Mollets debout', muscles: 'Mollets', reps: '15-20', instructions: 'Monter sur la pointe des pieds, pause en haut.' },
-        { name: 'Mollets assis', muscles: 'Soléaire', reps: '15-20', instructions: 'Assis, lever les talons lentement.' },
-        { name: 'Mollets presse', muscles: 'Mollets', reps: '15-20', instructions: 'À la presse, pousser avec la pointe des pieds.' }
+        { name: 'Mollets debout', muscles: 'Mollets', reps: '15-20', instructions: 'Monter sur la pointe des pieds, pause en haut.', media: 'images/leg_extension.png' },
+        { name: 'Mollets assis', muscles: 'Soléaire', reps: '15-20', instructions: 'Assis, lever les talons lentement.', media: 'images/leg_extension.png' },
+        { name: 'Mollets presse', muscles: 'Mollets', reps: '15-20', instructions: 'À la presse, pousser avec la pointe des pieds.', media: 'images/leg_press.png' }
     ]
 };
 
@@ -1893,7 +1893,7 @@ function createAiWorkout() {
                 reps: ex.reps,
                 restTime: selectedDuration >= 45 ? 90 : 60,
                 instructions: ex.instructions,
-                media: null
+                media: ex.media || null
             });
         });
     });
