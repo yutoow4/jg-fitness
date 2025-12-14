@@ -436,8 +436,21 @@ function updateCurrentDate() {
 function renderPrograms() {
     const allPrograms = getAllPrograms();
 
-    DOM.programCards.innerHTML = allPrograms.map(program => `
-        <div class="program-card ${program.isCustom ? 'custom' : ''}" data-program-id="${program.id}">
+    DOM.programCards.innerHTML = allPrograms.map(program => {
+        const cardClasses = ['program-card'];
+        if (program.isCustom) cardClasses.push('custom');
+        if (program.isAiGenerated) cardClasses.push('ai-generated');
+
+        return `
+        <div class="${cardClasses.join(' ')}" data-program-id="${program.id}">
+            ${program.isAiGenerated ? `
+                <span class="ai-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                    </svg>
+                    IA
+                </span>
+            ` : ''}
             ${program.isCustom ? `
                 <button class="delete-program-btn" data-delete-id="${program.id}" onclick="event.stopPropagation(); deleteCustomWorkout('${program.id}')">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -463,7 +476,7 @@ function renderPrograms() {
                 </span>
             </div>
         </div>
-    `).join('');
+    `}).join('');
 
     // Add click handlers
     document.querySelectorAll('.program-card').forEach(card => {
@@ -1691,6 +1704,268 @@ function setupCreateWorkoutListeners() {
 }
 
 // ========================================
+// AI WORKOUT GENERATOR
+// ========================================
+
+// Exercise database by body part
+const AI_EXERCISE_DATABASE = {
+    shoulders: [
+        { name: 'Développé épaules', muscles: 'Deltoïdes', reps: '8-12', instructions: 'Pousser la barre au-dessus de la tête en gardant le dos droit.' },
+        { name: 'Élévations latérales', muscles: 'Deltoïdes latéraux', reps: '12-15', instructions: 'Lever les bras sur les côtés jusqu\'à hauteur des épaules.' },
+        { name: 'Face pulls', muscles: 'Deltoïdes postérieurs', reps: '15-20', instructions: 'Tirer la corde vers le visage en écartant les coudes.' },
+        { name: 'Oiseau', muscles: 'Deltoïdes postérieurs', reps: '12-15', instructions: 'Penché en avant, écarter les bras en serrant les omoplates.' }
+    ],
+    chest: [
+        { name: 'Développé couché', muscles: 'Pectoraux', reps: '8-12', instructions: 'Descendre la barre jusqu\'à la poitrine puis pousser.' },
+        { name: 'Développé incliné haltères', muscles: 'Pectoraux supérieurs', reps: '10-12', instructions: 'Sur banc incliné, pousser les haltères vers le haut.' },
+        { name: 'Écarté poulie', muscles: 'Pectoraux', reps: '12-15', instructions: 'Ramener les poignées devant en gardant les bras légèrement fléchis.' },
+        { name: 'Pompes', muscles: 'Pectoraux / Triceps', reps: '15-20', instructions: 'Corps gainé, descendre en fléchissant les coudes.' },
+        { name: 'Dips', muscles: 'Pectoraux / Triceps', reps: '10-15', instructions: 'Se pencher légèrement en avant pour cibler les pectoraux.' }
+    ],
+    arms: [
+        { name: 'Curl biceps barre', muscles: 'Biceps', reps: '10-12', instructions: 'Fléchir les coudes en gardant les coudes près du corps.' },
+        { name: 'Curl marteau', muscles: 'Biceps / Avant-bras', reps: '10-12', instructions: 'Paumes face à face, monter les haltères.' },
+        { name: 'Extension triceps poulie', muscles: 'Triceps', reps: '12-15', instructions: 'Pousser la barre vers le bas en gardant les coudes fixes.' },
+        { name: 'Dips triceps', muscles: 'Triceps', reps: '12-15', instructions: 'Dos au banc, descendre en fléchissant les coudes.' },
+        { name: 'Curl concentré', muscles: 'Biceps', reps: '10-12', instructions: 'Coude sur la cuisse, remonter l\'haltère lentement.' }
+    ],
+    forearms: [
+        { name: 'Curl poignets', muscles: 'Fléchisseurs avant-bras', reps: '15-20', instructions: 'Avant-bras sur un banc, fléchir les poignets.' },
+        { name: 'Extension poignets', muscles: 'Extenseurs avant-bras', reps: '15-20', instructions: 'Paumes vers le bas, lever les poignets.' },
+        { name: 'Farmer walk', muscles: 'Préhension / Avant-bras', reps: '30-45s', instructions: 'Marcher en tenant des poids lourds.' }
+    ],
+    abs: [
+        { name: 'Crunch', muscles: 'Abdominaux', reps: '15-20', instructions: 'Lever les épaules en contractant les abdos, ne pas tirer sur la nuque.' },
+        { name: 'Planche', muscles: 'Core / Abdominaux', reps: '30-60s', instructions: 'Maintenir le corps droit, gainage maximal.' },
+        { name: 'Relevé de jambes', muscles: 'Abdominaux inférieurs', reps: '12-15', instructions: 'Suspendu, lever les jambes à 90°.' },
+        { name: 'Russian twist', muscles: 'Obliques', reps: '20 (10/côté)', instructions: 'Assis, pieds levés, tourner le buste de chaque côté.' },
+        { name: 'Mountain climbers', muscles: 'Core / Cardio', reps: '30s', instructions: 'En position de pompe, ramener les genoux rapidement.' }
+    ],
+    back: [
+        { name: 'Tirage vertical', muscles: 'Grand dorsal', reps: '10-12', instructions: 'Tirer la barre vers la poitrine en serrant les omoplates.' },
+        { name: 'Rowing barre', muscles: 'Dos / Rhomboïdes', reps: '8-12', instructions: 'Penché, tirer la barre vers le nombril.' },
+        { name: 'Tirage horizontal', muscles: 'Dos / Rhomboïdes', reps: '10-12', instructions: 'Assis, tirer la poignée vers le ventre.' },
+        { name: 'Pull-ups', muscles: 'Grand dorsal / Biceps', reps: '8-12', instructions: 'Se suspendre et tirer le corps vers le haut.' },
+        { name: 'Shrug', muscles: 'Trapèzes', reps: '12-15', instructions: 'Hausser les épaules vers les oreilles.' }
+    ],
+    glutes: [
+        { name: 'Hip thrust', muscles: 'Fessiers', reps: '10-12', instructions: 'Dos sur banc, pousser les hanches vers le haut.' },
+        { name: 'Fentes', muscles: 'Fessiers / Quadriceps', reps: '10/jambe', instructions: 'Faire un grand pas et descendre le genou arrière.' },
+        { name: 'Kickback câble', muscles: 'Fessiers', reps: '12-15', instructions: 'Pousser la jambe vers l\'arrière en contractant le fessier.' },
+        { name: 'Pont fessier', muscles: 'Fessiers', reps: '15-20', instructions: 'Allongé, lever les hanches en serrant les fessiers.' },
+        { name: 'Abduction hanche', muscles: 'Moyen fessier', reps: '15-20', instructions: 'À la machine, écarter les cuisses.' }
+    ],
+    legs: [
+        { name: 'Squat', muscles: 'Quadriceps / Fessiers', reps: '8-12', instructions: 'Descendre les hanches en gardant le dos droit.' },
+        { name: 'Leg press', muscles: 'Quadriceps / Fessiers', reps: '10-12', instructions: 'Pousser la plateforme en contrôlant la descente.' },
+        { name: 'Leg extension', muscles: 'Quadriceps', reps: '12-15', instructions: 'Étendre les jambes en contractant les quadriceps.' },
+        { name: 'Leg curl', muscles: 'Ischio-jambiers', reps: '12-15', instructions: 'Fléchir les jambes en ramenant les talons vers les fesses.' },
+        { name: 'Soulevé de terre roumain', muscles: 'Ischio-jambiers', reps: '10-12', instructions: 'Descendre la barre le long des jambes, dos droit.' },
+        { name: 'Split squat bulgare', muscles: 'Quadriceps / Fessiers', reps: '10/jambe', instructions: 'Pied arrière sur banc, descendre en fente.' }
+    ],
+    calves: [
+        { name: 'Mollets debout', muscles: 'Mollets', reps: '15-20', instructions: 'Monter sur la pointe des pieds, pause en haut.' },
+        { name: 'Mollets assis', muscles: 'Soléaire', reps: '15-20', instructions: 'Assis, lever les talons lentement.' },
+        { name: 'Mollets presse', muscles: 'Mollets', reps: '15-20', instructions: 'À la presse, pousser avec la pointe des pieds.' }
+    ]
+};
+
+const BODY_PART_NAMES = {
+    shoulders: 'Épaules',
+    chest: 'Pectoraux',
+    arms: 'Bras',
+    forearms: 'Avant-bras',
+    abs: 'Abdos',
+    back: 'Dos',
+    glutes: 'Fessiers',
+    legs: 'Jambes',
+    calves: 'Mollets'
+};
+
+let selectedBodyParts = new Set();
+let selectedDuration = 30;
+
+function openAiWorkoutModal() {
+    selectedBodyParts.clear();
+    selectedDuration = 30;
+
+    // Reset body parts
+    document.querySelectorAll('.body-part').forEach(part => {
+        part.classList.remove('selected');
+    });
+
+    // Reset duration
+    document.querySelectorAll('.duration-option').forEach(opt => {
+        opt.classList.toggle('selected', parseInt(opt.dataset.duration) === 30);
+    });
+
+    updateSelectedPartsDisplay();
+    document.getElementById('aiWorkoutModal').classList.remove('hidden');
+}
+
+function closeAiWorkoutModal() {
+    document.getElementById('aiWorkoutModal').classList.add('hidden');
+}
+
+function toggleBodyPart(partName) {
+    if (selectedBodyParts.has(partName)) {
+        selectedBodyParts.delete(partName);
+    } else {
+        selectedBodyParts.add(partName);
+    }
+
+    // Update visual
+    document.querySelectorAll(`.body-part[data-part="${partName}"]`).forEach(el => {
+        el.classList.toggle('selected', selectedBodyParts.has(partName));
+    });
+
+    updateSelectedPartsDisplay();
+}
+
+function updateSelectedPartsDisplay() {
+    const container = document.getElementById('selectedParts');
+
+    if (selectedBodyParts.size === 0) {
+        container.innerHTML = '<span class="no-selection">Aucune zone sélectionnée</span>';
+        return;
+    }
+
+    container.innerHTML = Array.from(selectedBodyParts).map(part => `
+        <span class="part-tag">
+            ${BODY_PART_NAMES[part] || part}
+            <button onclick="toggleBodyPart('${part}')">&times;</button>
+        </span>
+    `).join('');
+}
+
+function generateAiWorkout() {
+    if (selectedBodyParts.size === 0) {
+        showToast('⚠️ Sélectionne au moins une zone');
+        return;
+    }
+
+    // Show loading
+    document.getElementById('aiWorkoutModal').classList.add('hidden');
+    document.getElementById('aiLoadingModal').classList.remove('hidden');
+
+    // Simulate AI processing
+    setTimeout(() => {
+        const workout = createAiWorkout();
+
+        // Save workout
+        const customWorkouts = JSON.parse(localStorage.getItem(STORAGE_KEYS.CUSTOM_WORKOUTS) || '[]');
+        customWorkouts.push(workout);
+        localStorage.setItem(STORAGE_KEYS.CUSTOM_WORKOUTS, JSON.stringify(customWorkouts));
+
+        // Hide loading
+        document.getElementById('aiLoadingModal').classList.add('hidden');
+
+        // Re-render and show success
+        renderPrograms();
+        showToast('✨ Séance IA créée !');
+
+    }, 2000); // 2 second delay for effect
+}
+
+function createAiWorkout() {
+    const exercises = [];
+    const partsArray = Array.from(selectedBodyParts);
+
+    // Calculate exercises per body part based on duration
+    // ~5 min per exercise (including rest)
+    const totalExercises = Math.floor(selectedDuration / 5);
+    const exercisesPerPart = Math.max(1, Math.floor(totalExercises / partsArray.length));
+
+    partsArray.forEach(part => {
+        const availableExercises = AI_EXERCISE_DATABASE[part] || [];
+        if (availableExercises.length === 0) return;
+
+        // Shuffle and pick exercises
+        const shuffled = [...availableExercises].sort(() => Math.random() - 0.5);
+        const selected = shuffled.slice(0, exercisesPerPart);
+
+        selected.forEach(ex => {
+            exercises.push({
+                id: 'ai_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                name: ex.name,
+                muscles: ex.muscles,
+                sets: selectedDuration >= 45 ? 4 : 3,
+                reps: ex.reps,
+                restTime: selectedDuration >= 45 ? 90 : 60,
+                instructions: ex.instructions,
+                media: null
+            });
+        });
+    });
+
+    // Generate workout name
+    let workoutName = '';
+    if (partsArray.length === 1) {
+        workoutName = `${BODY_PART_NAMES[partsArray[0]]} - IA`;
+    } else if (partsArray.length === 2) {
+        workoutName = `${BODY_PART_NAMES[partsArray[0]]} & ${BODY_PART_NAMES[partsArray[1]]}`;
+    } else if (partsArray.length <= 4) {
+        workoutName = partsArray.map(p => BODY_PART_NAMES[p]).join(' / ');
+    } else {
+        workoutName = `Full Body - IA`;
+    }
+
+    return {
+        id: 'ai_workout_' + Date.now(),
+        name: workoutName,
+        subtitle: `Généré par IA • ${selectedDuration} min`,
+        icon: '⚡',
+        exercises: exercises,
+        isCustom: true,
+        isAiGenerated: true
+    };
+}
+
+function setupAiWorkoutListeners() {
+    // Open AI modal
+    const aiBtn = document.getElementById('aiWorkoutBtn');
+    if (aiBtn) aiBtn.addEventListener('click', openAiWorkoutModal);
+
+    // Close AI modal
+    const closeBtn = document.getElementById('closeAiWorkout');
+    if (closeBtn) closeBtn.addEventListener('click', closeAiWorkoutModal);
+
+    const cancelBtn = document.getElementById('cancelAiWorkout');
+    if (cancelBtn) cancelBtn.addEventListener('click', closeAiWorkoutModal);
+
+    // Generate workout
+    const generateBtn = document.getElementById('generateAiWorkout');
+    if (generateBtn) generateBtn.addEventListener('click', generateAiWorkout);
+
+    // Body part selection
+    document.querySelectorAll('.body-part').forEach(part => {
+        part.addEventListener('click', () => {
+            const partName = part.dataset.part;
+            if (partName && partName !== 'head' && partName !== 'neck') {
+                toggleBodyPart(partName);
+            }
+        });
+    });
+
+    // Duration selection
+    document.querySelectorAll('.duration-option').forEach(opt => {
+        opt.addEventListener('click', () => {
+            document.querySelectorAll('.duration-option').forEach(o => o.classList.remove('selected'));
+            opt.classList.add('selected');
+            selectedDuration = parseInt(opt.dataset.duration);
+        });
+    });
+
+    // Close on background click
+    const aiModal = document.getElementById('aiWorkoutModal');
+    if (aiModal) {
+        aiModal.addEventListener('click', (e) => {
+            if (e.target === aiModal) closeAiWorkoutModal();
+        });
+    }
+}
+
+// ========================================
 // START APP
 // ========================================
 document.addEventListener('DOMContentLoaded', () => {
@@ -1698,4 +1973,5 @@ document.addEventListener('DOMContentLoaded', () => {
     setupWorkoutDetailListeners();
     setupHistoryClickHandler();
     setupCreateWorkoutListeners();
+    setupAiWorkoutListeners();
 });

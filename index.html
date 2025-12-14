@@ -48,14 +48,26 @@
                     <div class="program-selector" id="programSelector">
                         <div class="section-header">
                             <h2 class="section-title">Choisis ta séance</h2>
-                            <button class="add-workout-btn" id="addWorkoutBtn">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2">
-                                    <line x1="12" y1="5" x2="12" y2="19" />
-                                    <line x1="5" y1="12" x2="19" y2="12" />
-                                </svg>
-                                Créer
-                            </button>
+                            <div class="header-buttons">
+                                <button class="ai-workout-btn" id="aiWorkoutBtn">
+                                    <span class="ai-btn-content">
+                                        <svg class="ai-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                                        </svg>
+                                        IA
+                                    </span>
+                                    <span class="shine-effect"></span>
+                                </button>
+                                <button class="add-workout-btn" id="addWorkoutBtn">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <line x1="12" y1="5" x2="12" y2="19" />
+                                        <line x1="5" y1="12" x2="19" y2="12" />
+                                    </svg>
+                                    Créer
+                                </button>
+                            </div>
                         </div>
                         <div class="program-cards" id="programCards">
                             <!-- Programs will be inserted here -->
@@ -553,6 +565,118 @@
                 <div class="modal-actions">
                     <button class="modal-btn cancel" id="cancelAddExercise">Annuler</button>
                     <button class="modal-btn confirm" id="confirmAddExercise">Ajouter</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Workout Modal -->
+        <div class="modal-overlay ai-modal hidden" id="aiWorkoutModal">
+            <div class="modal-content ai-workout-modal">
+                <div class="modal-header">
+                    <h3>
+                        <svg class="ai-header-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                        </svg>
+                        Créer avec l'IA
+                    </h3>
+                    <button class="close-modal-btn" id="closeAiWorkout">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M18 6L6 18M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="ai-instructions">Sélectionne les zones à travailler</p>
+
+                    <!-- Body Silhouette -->
+                    <div class="body-selector">
+                        <svg class="body-silhouette" viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Head -->
+                            <ellipse class="body-part" data-part="head" cx="100" cy="30" rx="25" ry="28" />
+
+                            <!-- Neck -->
+                            <rect class="body-part" data-part="neck" x="90" y="55" width="20" height="15" />
+
+                            <!-- Shoulders -->
+                            <ellipse class="body-part" data-part="shoulders" cx="55" cy="85" rx="20" ry="12" />
+                            <ellipse class="body-part" data-part="shoulders" cx="145" cy="85" rx="20" ry="12" />
+
+                            <!-- Chest -->
+                            <path class="body-part" data-part="chest" d="M65 75 L135 75 L130 130 L70 130 Z" />
+
+                            <!-- Arms -->
+                            <rect class="body-part" data-part="arms" x="30" y="90" width="25" height="70" rx="10" />
+                            <rect class="body-part" data-part="arms" x="145" y="90" width="25" height="70" rx="10" />
+
+                            <!-- Forearms -->
+                            <rect class="body-part" data-part="forearms" x="25" y="160" width="22" height="55" rx="8" />
+                            <rect class="body-part" data-part="forearms" x="153" y="160" width="22" height="55"
+                                rx="8" />
+
+                            <!-- Abs -->
+                            <rect class="body-part" data-part="abs" x="75" y="130" width="50" height="55" rx="5" />
+
+                            <!-- Back (shown as label) -->
+                            <rect class="body-part" data-part="back" x="70" y="185" width="60" height="25" rx="5" />
+
+                            <!-- Glutes -->
+                            <ellipse class="body-part" data-part="glutes" cx="85" cy="225" rx="18" ry="20" />
+                            <ellipse class="body-part" data-part="glutes" cx="115" cy="225" rx="18" ry="20" />
+
+                            <!-- Thighs -->
+                            <rect class="body-part" data-part="legs" x="65" y="245" width="30" height="75" rx="12" />
+                            <rect class="body-part" data-part="legs" x="105" y="245" width="30" height="75" rx="12" />
+
+                            <!-- Calves -->
+                            <rect class="body-part" data-part="calves" x="68" y="320" width="24" height="55" rx="10" />
+                            <rect class="body-part" data-part="calves" x="108" y="320" width="24" height="55" rx="10" />
+                        </svg>
+
+                        <div class="selected-parts" id="selectedParts">
+                            <span class="no-selection">Aucune zone sélectionnée</span>
+                        </div>
+                    </div>
+
+                    <!-- Duration Selector -->
+                    <div class="duration-selector">
+                        <label>Durée de la séance</label>
+                        <div class="duration-options">
+                            <button class="duration-option" data-duration="20">20 min</button>
+                            <button class="duration-option selected" data-duration="30">30 min</button>
+                            <button class="duration-option" data-duration="45">45 min</button>
+                            <button class="duration-option" data-duration="60">1h</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button class="modal-btn cancel" id="cancelAiWorkout">Annuler</button>
+                    <button class="modal-btn confirm ai-generate-btn" id="generateAiWorkout">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                        </svg>
+                        Générer la séance
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Loading Modal -->
+        <div class="modal-overlay hidden" id="aiLoadingModal">
+            <div class="ai-loading-content">
+                <div class="ai-loading-animation">
+                    <div class="ai-brain">
+                        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                        </svg>
+                    </div>
+                </div>
+                <p class="ai-loading-text">L'IA génère ta séance...</p>
+                <div class="ai-loading-dots">
+                    <span></span><span></span><span></span>
                 </div>
             </div>
         </div>
