@@ -7,8 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#0a0a0f">
-    <meta name="description"
-        content="JG Fitness - Application d'entraînement personnalisée. Suivez vos performances et atteignez vos objectifs.">
+    <meta name="description" content="JG Fitness - Application d'entraînement personnalisée.">
 
     <title>JG Fitness</title>
 
@@ -22,7 +21,6 @@
     <link rel="icon" type="image/svg+xml"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💪</text></svg>">
 
-    <!-- Stylesheet -->
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -47,26 +45,18 @@
                     <!-- Program Selection -->
                     <div class="program-selector" id="programSelector">
                         <div class="section-header">
-                            <h2 class="section-title">Choisis ta séance</h2>
+                            <h2 class="section-title">Tes Programmes</h2>
                             <div class="header-buttons">
-                                <button class="ai-workout-btn" id="aiWorkoutBtn">
-                                    <span class="ai-btn-content">
-                                        + IA ⚡
-                                    </span>
-                                    <span class="shine-effect"></span>
+                                <button class="add-workout-btn" id="aiWorkoutBtn">
+                                    IA ⚡
                                 </button>
                                 <button class="add-workout-btn" id="addWorkoutBtn">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2">
-                                        <line x1="12" y1="5" x2="12" y2="19" />
-                                        <line x1="5" y1="12" x2="19" y2="12" />
-                                    </svg>
-                                    Créer
+                                    + Créer
                                 </button>
                             </div>
                         </div>
                         <div class="program-cards" id="programCards">
-                            <!-- Programs will be inserted here -->
+                            <!-- Programs inserted via JS -->
                         </div>
                     </div>
 
@@ -88,21 +78,12 @@
                         <!-- Exercise Card -->
                         <div class="exercise-card" id="exerciseCard">
                             <div class="exercise-media">
-                                <div class="media-placeholder" id="exerciseMedia">
-                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="1.5">
-                                        <rect x="3" y="3" width="18" height="18" rx="2" />
-                                        <circle cx="8.5" cy="8.5" r="1.5" />
-                                        <path d="M21 15l-5-5L5 21" />
-                                    </svg>
-                                </div>
+                                <div class="media-placeholder" id="exerciseMedia"></div>
                             </div>
 
                             <div class="exercise-content">
                                 <h3 class="exercise-name" id="exerciseName">Nom de l'exercice</h3>
-                                <div class="exercise-muscles" id="exerciseMuscles">
-                                    <span class="muscle-badge">💪 Muscles ciblés</span>
-                                </div>
+                                <div class="exercise-muscles" id="exerciseMuscles"></div>
 
                                 <div class="exercise-stats">
                                     <div class="stat-item">
@@ -131,46 +112,29 @@
 
                         <!-- Performance Log -->
                         <div class="performance-log">
-                            <h4 class="log-title">
-                                <span class="log-icon">📝</span>
-                                Journal de bord
-                            </h4>
-                            <div class="log-entries" id="logEntries">
-                                <!-- Log entries will be inserted here -->
-                            </div>
-                        </div>
-
-                        <!-- Rest Timer Modal -->
-                        <div class="rest-timer-modal hidden" id="restTimerModal">
-                            <div class="timer-content">
-                                <div class="timer-circle">
-                                    <svg class="timer-svg" viewBox="0 0 100 100">
-                                        <circle class="timer-bg" cx="50" cy="50" r="45" />
-                                        <circle class="timer-progress" cx="50" cy="50" r="45" id="timerProgress" />
-                                    </svg>
-                                    <div class="timer-display" id="timerDisplay">90</div>
-                                </div>
-                                <p class="timer-label">Temps de repos</p>
-                                <button class="skip-timer-btn" id="skipTimer">Passer</button>
-                            </div>
+                            <h4 class="log-title"><span class="log-icon">📝</span> Journal de bord</h4>
+                            <div class="log-entries" id="logEntries"></div>
                         </div>
 
                         <!-- Navigation Buttons -->
                         <div class="exercise-navigation">
-                            <button class="nav-btn prev-btn" id="prevExercise" disabled>
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2">
-                                    <path d="M15 18l-6-6 6-6" />
+                            <button class="nav-btn prev-btn" id="prevExercise" disabled>Précédent</button>
+                            <button class="nav-btn next-btn" id="nextExercise">Suivant</button>
+                        </div>
+                    </div>
+
+                    <!-- Rest Timer Modal -->
+                    <div class="rest-timer-modal hidden" id="restTimerModal">
+                        <div class="timer-content">
+                            <div class="timer-circle">
+                                <svg class="timer-svg" viewBox="0 0 100 100">
+                                    <circle class="timer-bg" cx="50" cy="50" r="45" />
+                                    <circle class="timer-progress" cx="50" cy="50" r="45" id="timerProgress" />
                                 </svg>
-                                Précédent
-                            </button>
-                            <button class="nav-btn next-btn" id="nextExercise">
-                                Suivant
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2">
-                                    <path d="M9 18l6-6-6-6" />
-                                </svg>
-                            </button>
+                                <div class="timer-display" id="timerDisplay">90</div>
+                            </div>
+                            <p class="timer-label">Temps de repos</p>
+                            <button class="skip-timer-btn" id="skipTimer">Passer</button>
                         </div>
                     </div>
 
@@ -179,7 +143,7 @@
                         <div class="complete-content">
                             <div class="complete-icon">🎉</div>
                             <h2>Séance terminée !</h2>
-                            <p>Bravo pour cette séance. Continue comme ça !</p>
+                            <p>Bravo, tu as donné le meilleur de toi-même !</p>
                             <div class="complete-stats">
                                 <div class="complete-stat">
                                     <span class="stat-number" id="totalExercises">0</span>
@@ -196,110 +160,75 @@
                 </div>
             </section>
 
-            <!-- Réglages View -->
-            <section id="reglages-view" class="view">
+            <!-- Nutrition View -->
+            <section id="nutrition-view" class="view">
                 <div class="view-container">
-                    <h2 class="view-title">Réglages</h2>
+                    <h2 class="view-title">Nutrition</h2>
 
-                    <div class="settings-group">
-                        <h3 class="settings-group-title">Général</h3>
-
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <span class="setting-icon">🔔</span>
-                                <div class="setting-text">
-                                    <span class="setting-label">Notifications</span>
-                                    <span class="setting-desc">Recevoir des rappels d'entraînement</span>
-                                </div>
+                    <div class="program-card static">
+                        <div class="program-card-header">
+                            <div class="program-icon">🎯</div>
+                            <div>
+                                <div class="program-title">Objectif</div>
+                                <div class="program-subtitle">Force + Silhouette</div>
                             </div>
-                            <label class="toggle">
-                                <input type="checkbox" id="notificationsToggle">
-                                <span class="toggle-slider"></span>
-                            </label>
                         </div>
-
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <span class="setting-icon">🔊</span>
-                                <div class="setting-text">
-                                    <span class="setting-label">Son du timer</span>
-                                    <span class="setting-desc">Alerte sonore fin de repos</span>
-                                </div>
-                            </div>
-                            <label class="toggle">
-                                <input type="checkbox" id="soundToggle" checked>
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <span class="setting-icon">📳</span>
-                                <div class="setting-text">
-                                    <span class="setting-label">Vibration</span>
-                                    <span class="setting-desc">Vibrer à la fin du repos</span>
-                                </div>
-                            </div>
-                            <label class="toggle">
-                                <input type="checkbox" id="vibrationToggle" checked>
-                                <span class="toggle-slider"></span>
-                            </label>
+                        <div class="exercise-instructions">
+                            <p>80/20 : 80% d'aliments sains (clean), 20% de plaisir.</p>
+                            <p>Limiter les produits ultra-transformés et le sucre rapide hors séance.</p>
                         </div>
                     </div>
 
-                    <div class="settings-group">
-                        <h3 class="settings-group-title">Données</h3>
-
-                        <button class="setting-button" id="exportData">
-                            <span class="setting-icon">📤</span>
-                            <span class="setting-label">Exporter les données</span>
-                            <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2">
-                                <path d="M9 18l6-6-6-6" />
-                            </svg>
-                        </button>
-
-                        <button class="setting-button" id="importData">
-                            <span class="setting-icon">📥</span>
-                            <span class="setting-label">Importer les données</span>
-                            <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2">
-                                <path d="M9 18l6-6-6-6" />
-                            </svg>
-                        </button>
-
-                        <button class="setting-button danger" id="clearHistory">
-                            <span class="setting-icon">🗑️</span>
-                            <span class="setting-label">Effacer l'historique</span>
-                            <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2">
-                                <path d="M9 18l6-6-6-6" />
-                            </svg>
-                        </button>
-
-                        <button class="setting-button danger" id="resetApp">
-                            <span class="setting-icon">⚠️</span>
-                            <span class="setting-label">Réinitialiser l'application</span>
-                            <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2">
-                                <path d="M9 18l6-6-6-6" />
-                            </svg>
-                        </button>
+                    <div class="program-card static" style="margin-top: 16px;">
+                        <div class="program-card-header">
+                            <div class="program-icon">📊</div>
+                            <div class="program-title">Répartition Macros</div>
+                        </div>
+                        <ul class="nutrition-list">
+                            <li><strong>Protéines :</strong> 1,5g à 1,8g par kg de poids de corps</li>
+                            <li><strong>Glucides :</strong> Modérés, à prioriser autour de l'entraînement</li>
+                            <li><strong>Lipides :</strong> 25-30% des calories totales</li>
+                            <li><strong>Hydratation :</strong> 2 Litres d'eau minimum</li>
+                        </ul>
                     </div>
 
-                    <div class="settings-group">
-                        <h3 class="settings-group-title">À propos</h3>
-
-                        <div class="about-info">
-                            <div class="app-version">
-                                <span class="logo-icon">💪</span>
-                                <div>
-                                    <strong>JG Fitness</strong>
-                                    <span>Version 1.0.0</span>
-                                </div>
+                    <!-- Day Plan -->
+                    <div class="program-card static" style="margin-top: 16px;">
+                        <div class="program-card-header">
+                            <div class="program-icon">🍽️</div>
+                            <div class="program-title">Journée Type</div>
+                        </div>
+                        <div class="nutrition-day-plan">
+                            <div>
+                                <div class="meal-time">Petit-déjeuner</div>
+                                <ul class="nutrition-list">
+                                    <li>Flocons d'avoine + fruits rouges</li>
+                                    <li>1 yaourt grec ou 2 œufs</li>
+                                    <li>1 thé ou café</li>
+                                </ul>
                             </div>
-                            <p class="about-text">Application d'entraînement personnalisée pour atteindre vos objectifs
-                                fitness.</p>
+                            <div>
+                                <div class="meal-time">Déjeuner</div>
+                                <ul class="nutrition-list">
+                                    <li>Poulet / poisson / tofu</li>
+                                    <li>Riz complet ou pâtes complètes</li>
+                                    <li>Légumes vapeur + huile d'olive</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <div class="meal-time">Collation</div>
+                                <ul class="nutrition-list">
+                                    <li>Shake protéiné OU fromage blanc + fruits</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <div class="meal-time">Dîner</div>
+                                <ul class="nutrition-list">
+                                    <li>Légumes en grande quantité</li>
+                                    <li>Source de protéines</li>
+                                    <li>Patate douce ou quinoa</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -309,13 +238,10 @@
             <section id="profil-view" class="view">
                 <div class="view-container">
                     <div class="profile-header">
-                        <div class="profile-avatar">
-                            <span>JG</span>
-                        </div>
+                        <div class="profile-avatar">JG</div>
                         <h2 class="profile-name" id="profileName">Utilisateur</h2>
                         <p class="profile-tagline">🔥 En route vers tes objectifs</p>
                     </div>
-
                     <div class="stats-overview">
                         <div class="stat-card">
                             <span class="stat-icon-large">📅</span>
@@ -335,29 +261,115 @@
                     </div>
 
                     <div class="profile-section">
-                        <h3 class="section-heading">
-                            <span>🏋️</span>
-                            Records Personnels
-                        </h3>
+                        <div class="section-heading">
+                            <span>🎯</span> Records Personnels (PR)
+                        </div>
                         <div class="pr-list" id="prList">
-                            <div class="empty-state">
-                                <span class="empty-icon">🎯</span>
-                                <p>Tes records apparaîtront ici</p>
-                            </div>
+                            <!-- Populated by JS -->
                         </div>
                     </div>
 
                     <div class="profile-section">
-                        <h3 class="section-heading">
-                            <span>📊</span>
-                            Historique récent
-                        </h3>
+                        <div class="section-heading">
+                            <span>📝</span> Historique Récent
+                        </div>
                         <div class="history-list" id="historyList">
-                            <div class="empty-state">
-                                <span class="empty-icon">📝</span>
-                                <p>Ton historique apparaîtra ici</p>
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Réglages View -->
+            <section id="reglages-view" class="view">
+                <div class="view-container">
+                    <h2 class="view-title">Réglages</h2>
+
+                    <div class="settings-group">
+                        <div class="settings-group-title">Préférences</div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <span class="setting-icon">🔔</span>
+                                <div class="setting-text">
+                                    <span class="setting-label">Notifications</span>
+                                    <span class="setting-desc">Rappels d'entraînement</span>
+                                </div>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" id="notificationsToggle">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <span class="setting-icon">🔊</span>
+                                <div class="setting-text">
+                                    <span class="setting-label">Sons</span>
+                                    <span class="setting-desc">Bips du minuteur</span>
+                                </div>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" id="soundToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <span class="setting-icon">📳</span>
+                                <div class="setting-text">
+                                    <span class="setting-label">Vibrations</span>
+                                    <span class="setting-desc">Retour haptique</span>
+                                </div>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" id="vibrationToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="settings-group">
+                        <div class="settings-group-title">Données</div>
+
+                        <button class="setting-button" id="exportData">
+                            <span class="setting-icon">📤</span>
+                            <span class="setting-label">Exporter les données</span>
+                            <span class="chevron">›</span>
+                        </button>
+
+                        <button class="setting-button" id="importData">
+                            <span class="setting-icon">📥</span>
+                            <span class="setting-label">Importer une sauvegarde</span>
+                            <span class="chevron">›</span>
+                        </button>
+
+                        <button class="setting-button danger" id="clearHistory">
+                            <span class="setting-icon">🗑️</span>
+                            <span class="setting-label">Effacer l'historique</span>
+                            <span class="chevron">›</span>
+                        </button>
+
+                        <button class="setting-button danger" id="resetApp">
+                            <span class="setting-icon">⚠️</span>
+                            <span class="setting-label">Réinitialiser l'application</span>
+                            <span class="chevron">›</span>
+                        </button>
+                    </div>
+
+                    <div class="about-info">
+                        <div class="app-version">
+                            <span class="logo-icon">💪</span>
+                            <div>
+                                <strong>JG Fitness</strong>
+                                <span>Version 2.0</span>
                             </div>
                         </div>
+                        <p class="about-text">
+                            Application d'entraînement conçue pour la performance et la simplicité.
+                        </p>
                     </div>
                 </div>
             </section>
@@ -366,42 +378,33 @@
         <!-- Bottom Navigation -->
         <nav class="bottom-nav">
             <button class="nav-item active" data-view="seance-view">
-                <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-width="2">
-                    <path
-                        d="M6.5 6.5h11M6.5 17.5h11M4 12h16M2 9.5V6a2 2 0 012-2h2.5M2 14.5V18a2 2 0 002 2h2.5M22 9.5V6a2 2 0 00-2-2h-2.5M22 14.5V18a2 2 0 01-2 2h-2.5" />
-                </svg>
+                <span class="nav-icon">🏋️</span>
                 <span>Séance</span>
             </button>
-            <button class="nav-item" data-view="reglages-view">
-                <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-width="2">
-                    <circle cx="12" cy="12" r="3" />
-                    <path
-                        d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z" />
-                </svg>
-                <span>Réglages</span>
+            <button class="nav-item" data-view="nutrition-view">
+                <span class="nav-icon">🥗</span>
+                <span>Nutrition</span>
             </button>
             <button class="nav-item" data-view="profil-view">
-                <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-width="2">
-                    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
-                    <circle cx="12" cy="7" r="4" />
-                </svg>
+                <span class="nav-icon">👤</span>
                 <span>Profil</span>
+            </button>
+            <button class="nav-item" data-view="reglages-view">
+                <span class="nav-icon">⚙️</span>
+                <span>Réglages</span>
             </button>
         </nav>
 
         <!-- Toast Notification -->
         <div class="toast hidden" id="toast">
-            <span class="toast-message" id="toastMessage"></span>
+            <span class="toast-message" id="toastMessage">Message</span>
         </div>
 
-        <!-- Confirmation Modal -->
+        <!-- Confirm Modal -->
         <div class="modal-overlay hidden" id="confirmModal">
             <div class="modal-content">
-                <h3 id="modalTitle">Confirmation</h3>
-                <p id="modalMessage">Êtes-vous sûr ?</p>
+                <h3 id="modalTitle">Confirmer</h3>
+                <p id="modalMessage">Es-tu sûr ?</p>
                 <div class="modal-actions">
                     <button class="modal-btn cancel" id="modalCancel">Annuler</button>
                     <button class="modal-btn confirm" id="modalConfirm">Confirmer</button>
@@ -409,11 +412,152 @@
             </div>
         </div>
 
-        <!-- Workout Detail Modal -->
-        <div class="modal-overlay workout-modal hidden" id="workoutDetailModal">
+        <!-- Create Workout Modal -->
+        <div class="modal-overlay hidden" id="createWorkoutModal">
+            <div class="modal-content create-workout-modal">
+                <h3 class="view-title" style="margin-bottom: var(--spacing-md); font-size: 1.5rem;">Créer une séance
+                </h3>
+
+                <div class="form-group">
+                    <label>Nom de la séance</label>
+                    <input type="text" class="form-input" id="workoutName" placeholder="Ex: Jambes Focus Quads">
+                </div>
+
+                <div class="form-group">
+                    <label>Icône</label>
+                    <div class="icon-selector">
+                        <div class="icon-option selected" data-icon="🏋️">🏋️</div>
+                        <div class="icon-option" data-icon="💪">💪</div>
+                        <div class="icon-option" data-icon="🏃‍♀️">🏃‍♀️</div>
+                        <div class="icon-option" data-icon="🔥">🔥</div>
+                        <div class="icon-option" data-icon="🦵">🦵</div>
+                        <div class="icon-option" data-icon="⚡">⚡</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Exercices</label>
+                    <div id="newExercisesList" class="exercises-list">
+                        <!-- Populated by JS -->
+                    </div>
+                    <button class="add-workout-btn" id="addExerciseBtn"
+                        style="width: 100%; justify-content: center; margin-top: 8px; background: var(--bg-tertiary); border: 1px solid var(--border-color); color: var(--text-primary);">
+                        + Ajouter un exercice
+                    </button>
+                </div>
+
+                <div class="modal-actions" style="margin-top: var(--spacing-lg);">
+                    <button class="modal-btn cancel" id="cancelCreateWorkout">Annuler</button>
+                    <button class="modal-btn" id="saveNewWorkout"
+                        style="background: var(--accent-gradient); color: white; border: none;">Enregistrer</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Exercise Modal (Sub-modal) -->
+        <div class="modal-overlay hidden" id="addExerciseModal" style="z-index: 450;">
+            <div class="modal-content" style="max-width: 450px;">
+                <h3 style="margin-bottom: var(--spacing-md);">Ajouter un exercice</h3>
+
+                <div class="form-group">
+                    <label>Nom de l'exercice</label>
+                    <input type="text" class="form-input" id="newExerciseName" placeholder="Ex: Squat">
+                </div>
+
+                <div class="form-group">
+                    <label>Muscles ciblés</label>
+                    <input type="text" class="form-input" id="newExerciseMuscles" placeholder="Ex: Quadriceps">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Séries</label>
+                        <input type="number" class="form-input" id="newExerciseSets" value="4">
+                    </div>
+                    <div class="form-group">
+                        <label>Reps</label>
+                        <input type="text" class="form-input" id="newExerciseReps" value="8-12">
+                    </div>
+                    <div class="form-group">
+                        <label>Repos (s)</label>
+                        <input type="number" class="form-input" id="newExerciseRest" value="90">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Instructions (optionnel)</label>
+                    <textarea class="form-input form-textarea" id="newExerciseInstructions"
+                        placeholder="Notes techniques..."></textarea>
+                </div>
+
+                <div class="modal-actions">
+                    <button class="modal-btn cancel" id="cancelAddExercise">Annuler</button>
+                    <button class="modal-btn" id="confirmAddExercise"
+                        style="background: var(--accent-gradient); color: white; border: none;">Ajouter</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Workout Modal -->
+        <div class="modal-overlay hidden" id="aiWorkoutModal">
+            <div class="modal-content">
+                <div class="ai-header" style="text-align: center; margin-bottom: var(--spacing-lg);">
+                    <div style="font-size: 3rem; margin-bottom: var(--spacing-sm);">🤖</div>
+                    <h3 style="font-size: 1.5rem; margin-bottom: 4px;">Générateur IA</h3>
+                    <p>Crée une séance sur mesure en quelques secondes</p>
+                </div>
+
+                <div class="form-group">
+                    <label>Zones à travailler</label>
+                    <div class="body-parts-grid"
+                        style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 8px;">
+                        <button class="body-part" data-part="shoulders">Épaules</button>
+                        <button class="body-part" data-part="chest">Pecs</button>
+                        <button class="body-part" data-part="back">Dos</button>
+                        <button class="body-part" data-part="arms">Bras</button>
+                        <button class="body-part" data-part="abs">Abdos</button>
+                        <button class="body-part" data-part="legs">Jambes</button>
+                        <button class="body-part" data-part="glutes">Fessiers</button>
+                    </div>
+                    <div id="selectedParts" class="selected-parts-tags"
+                        style="display: flex; flex-wrap: wrap; gap: 4px; min-height: 24px;"></div>
+                </div>
+
+                <div class="form-group">
+                    <label>Durée (min)</label>
+                    <div class="duration-selector" style="display: flex; gap: 8px;">
+                        <button class="duration-option selected" data-duration="30">30</button>
+                        <button class="duration-option" data-duration="45">45</button>
+                        <button class="duration-option" data-duration="60">60</button>
+                        <button class="duration-option" data-duration="90">90</button>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button class="modal-btn cancel" id="cancelAiWorkout">Fermer</button>
+                    <button class="modal-btn" id="generateAiWorkout"
+                        style="background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); color: white; border: none;">✨
+                        Générer</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Loading Modal -->
+        <div class="modal-overlay hidden" id="aiLoadingModal" style="z-index: 500;">
+            <div class="modal-content" style="text-align: center; max-width: 300px;">
+                <div class="loading-spinner"
+                    style="font-size: 3rem; margin-bottom: var(--spacing-md); animation: spin 2s linear infinite;">⚡
+                </div>
+                <h3>L'IA réfléchit...</h3>
+                <p>Création de ton programme optimal</p>
+            </div>
+        </div>
+
+        <!-- Workout Detail Modal (History) -->
+        <div class="modal-overlay hidden" id="workoutDetailModal">
             <div class="modal-content workout-detail-modal">
                 <div class="modal-header">
-                    <h3 id="workoutDetailTitle">Détails de la séance</h3>
+                    <h3>Détails de la séance</h3>
                     <button class="close-modal-btn" id="closeWorkoutDetail">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2">
@@ -421,262 +565,127 @@
                         </svg>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <div class="workout-detail-info">
-                        <p class="workout-detail-date" id="workoutDetailDate"></p>
-                        <p class="workout-detail-program" id="workoutDetailProgram"></p>
-                    </div>
-                    <div class="workout-detail-exercises" id="workoutDetailExercises">
-                        <!-- Exercises will be inserted here -->
-                    </div>
+
+                <div class="workout-detail-info">
+                    <div class="workout-detail-date" id="workoutDetailDate">Lundi 12 Octobre</div>
+                    <div class="workout-detail-program" id="workoutDetailProgram">Haut du corps</div>
                 </div>
-                <div class="modal-actions workout-actions">
+
+                <div class="workout-detail-exercises" id="workoutDetailExercises">
+                    <!-- Populated by JS -->
+                </div>
+
+                <div class="workout-actions">
                     <button class="action-btn export-txt" id="exportWorkoutTxt">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                            <polyline points="14 2 14 8 20 8" />
-                            <line x1="16" y1="13" x2="8" y2="13" />
-                            <line x1="16" y1="17" x2="8" y2="17" />
-                        </svg>
-                        Texte
+                        <span>📄</span> Texte
                     </button>
                     <button class="action-btn export-pdf" id="exportWorkoutPdf">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                            <polyline points="14 2 14 8 20 8" />
-                            <path d="M10 12h4" />
-                            <path d="M10 16h4" />
-                        </svg>
-                        PDF
+                        <span>📑</span> PDF
                     </button>
                     <button class="action-btn delete-workout" id="deleteWorkoutBtn">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <polyline points="3 6 5 6 21 6" />
-                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                        </svg>
-                        Supprimer
+                        <span>🗑️</span>
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Create Workout Modal -->
-        <div class="modal-overlay workout-modal hidden" id="createWorkoutModal">
-            <div class="modal-content create-workout-modal">
-                <div class="modal-header">
-                    <h3>Créer une séance</h3>
-                    <button class="close-modal-btn" id="closeCreateWorkout">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <path d="M18 6L6 18M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="workoutName">Nom de la séance</label>
-                        <input type="text" id="workoutName" class="form-input" placeholder="Ex: Jeudi - Cardio">
-                    </div>
-                    <div class="form-group">
-                        <label for="workoutIcon">Icône</label>
-                        <div class="icon-selector" id="iconSelector">
-                            <button class="icon-option selected" data-icon="🏋️">🏋️</button>
-                            <button class="icon-option" data-icon="💪">💪</button>
-                            <button class="icon-option" data-icon="🔥">🔥</button>
-                            <button class="icon-option" data-icon="🏃‍♀️">🏃‍♀️</button>
-                            <button class="icon-option" data-icon="⚡">⚡</button>
-                            <button class="icon-option" data-icon="🎯">🎯</button>
-                            <button class="icon-option" data-icon="💥">💥</button>
-                            <button class="icon-option" data-icon="🌟">🌟</button>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Exercices</label>
-                        <div class="exercises-list" id="newExercisesList">
-                            <!-- Exercises will be added here -->
-                        </div>
-                        <button class="add-exercise-btn" id="addExerciseBtn">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <line x1="12" y1="5" x2="12" y2="19" />
-                                <line x1="5" y1="12" x2="19" y2="12" />
-                            </svg>
-                            Ajouter un exercice
-                        </button>
-                    </div>
-                </div>
-                <div class="modal-actions">
-                    <button class="modal-btn cancel" id="cancelCreateWorkout">Annuler</button>
-                    <button class="modal-btn confirm save-workout" id="saveNewWorkout">Sauvegarder</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Add Exercise Modal -->
-        <div class="modal-overlay hidden" id="addExerciseModal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>Ajouter un exercice</h3>
-                    <button class="close-modal-btn" id="closeAddExercise">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <path d="M18 6L6 18M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="exerciseName">Nom de l'exercice</label>
-                        <input type="text" id="newExerciseName" class="form-input" placeholder="Ex: Squat">
-                    </div>
-                    <div class="form-group">
-                        <label for="exerciseMuscles">Muscles ciblés</label>
-                        <input type="text" id="newExerciseMuscles" class="form-input"
-                            placeholder="Ex: Quadriceps / Fessiers">
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="exerciseSets">Séries</label>
-                            <input type="number" id="newExerciseSets" class="form-input" value="4" min="1" max="10">
-                        </div>
-                        <div class="form-group">
-                            <label for="exerciseReps">Répétitions</label>
-                            <input type="text" id="newExerciseReps" class="form-input" placeholder="8-12" value="8-12">
-                        </div>
-                        <div class="form-group">
-                            <label for="exerciseRest">Repos (sec)</label>
-                            <input type="number" id="newExerciseRest" class="form-input" value="90" min="30" max="300"
-                                step="15">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="exerciseInstructions">Instructions</label>
-                        <textarea id="newExerciseInstructions" class="form-input form-textarea"
-                            placeholder="Décris la bonne exécution..."></textarea>
-                    </div>
-                </div>
-                <div class="modal-actions">
-                    <button class="modal-btn cancel" id="cancelAddExercise">Annuler</button>
-                    <button class="modal-btn confirm" id="confirmAddExercise">Ajouter</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- AI Workout Modal -->
-        <div class="modal-overlay ai-modal hidden" id="aiWorkoutModal">
-            <div class="modal-content ai-workout-modal">
-                <div class="modal-header">
-                    <h3>
-                        <svg class="ai-header-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2">
-                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-                        </svg>
-                        Créer avec l'IA
-                    </h3>
-                    <button class="close-modal-btn" id="closeAiWorkout">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <path d="M18 6L6 18M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p class="ai-instructions">Sélectionne les zones à travailler</p>
-
-                    <!-- Body Silhouette -->
-                    <div class="body-selector">
-                        <svg class="body-silhouette" viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Head -->
-                            <ellipse class="body-part" data-part="head" cx="100" cy="30" rx="25" ry="28" />
-
-                            <!-- Neck -->
-                            <rect class="body-part" data-part="neck" x="90" y="55" width="20" height="15" />
-
-                            <!-- Shoulders -->
-                            <ellipse class="body-part" data-part="shoulders" cx="55" cy="85" rx="20" ry="12" />
-                            <ellipse class="body-part" data-part="shoulders" cx="145" cy="85" rx="20" ry="12" />
-
-                            <!-- Chest -->
-                            <path class="body-part" data-part="chest" d="M65 75 L135 75 L130 130 L70 130 Z" />
-
-                            <!-- Arms -->
-                            <rect class="body-part" data-part="arms" x="30" y="90" width="25" height="70" rx="10" />
-                            <rect class="body-part" data-part="arms" x="145" y="90" width="25" height="70" rx="10" />
-
-                            <!-- Forearms -->
-                            <rect class="body-part" data-part="forearms" x="25" y="160" width="22" height="55" rx="8" />
-                            <rect class="body-part" data-part="forearms" x="153" y="160" width="22" height="55"
-                                rx="8" />
-
-                            <!-- Abs -->
-                            <rect class="body-part" data-part="abs" x="75" y="130" width="50" height="55" rx="5" />
-
-                            <!-- Back (shown as label) -->
-                            <rect class="body-part" data-part="back" x="70" y="185" width="60" height="25" rx="5" />
-
-                            <!-- Glutes -->
-                            <ellipse class="body-part" data-part="glutes" cx="85" cy="225" rx="18" ry="20" />
-                            <ellipse class="body-part" data-part="glutes" cx="115" cy="225" rx="18" ry="20" />
-
-                            <!-- Thighs -->
-                            <rect class="body-part" data-part="legs" x="65" y="245" width="30" height="75" rx="12" />
-                            <rect class="body-part" data-part="legs" x="105" y="245" width="30" height="75" rx="12" />
-
-                            <!-- Calves -->
-                            <rect class="body-part" data-part="calves" x="68" y="320" width="24" height="55" rx="10" />
-                            <rect class="body-part" data-part="calves" x="108" y="320" width="24" height="55" rx="10" />
-                        </svg>
-
-                        <div class="selected-parts" id="selectedParts">
-                            <span class="no-selection">Aucune zone sélectionnée</span>
-                        </div>
-                    </div>
-
-                    <!-- Duration Selector -->
-                    <div class="duration-selector">
-                        <label>Durée de la séance</label>
-                        <div class="duration-options">
-                            <button class="duration-option" data-duration="20">20 min</button>
-                            <button class="duration-option selected" data-duration="30">30 min</button>
-                            <button class="duration-option" data-duration="45">45 min</button>
-                            <button class="duration-option" data-duration="60">1h</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-actions">
-                    <button class="modal-btn cancel" id="cancelAiWorkout">Annuler</button>
-                    <button class="modal-btn confirm ai-generate-btn" id="generateAiWorkout">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-                        </svg>
-                        Générer la séance
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- AI Loading Modal -->
-        <div class="modal-overlay hidden" id="aiLoadingModal">
-            <div class="ai-loading-content">
-                <div class="ai-loading-animation">
-                    <div class="ai-brain">
-                        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="1.5">
-                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-                        </svg>
-                    </div>
-                </div>
-                <p class="ai-loading-text">L'IA génère ta séance...</p>
-                <div class="ai-loading-dots">
-                    <span></span><span></span><span></span>
-                </div>
-            </div>
-        </div>
     </div>
+
+    <!-- Additional Styles for new modals injected here to ensure they work without editing css file -->
+    <style>
+        .body-part {
+            padding: 8px;
+            border-radius: 8px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .body-part.selected {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: var(--accent-primary);
+            color: white;
+        }
+
+        .duration-option {
+            flex: 1;
+            padding: 8px;
+            border-radius: 8px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .duration-option.selected {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .part-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            font-size: 0.75rem;
+            color: var(--accent-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .part-tag button {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .exercise-item-preview {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .exercise-item-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .exercise-item-name {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .exercise-item-details {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .remove-exercise-btn {
+            background: none;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+            padding: 4px;
+        }
+    </style>
 
     <script src="app.js"></script>
 </body>
